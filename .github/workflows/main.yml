@@ -9,6 +9,12 @@ on:
     - cron: '00 14 * * *'
     - cron: '00 06 * * 1-5'
 
+# Added explicit write permissions for the GITHUB_TOKEN
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   run-postman-tester:
     runs-on: ubuntu-latest
@@ -29,23 +35,23 @@ jobs:
 
       - name: Run the postman collection with newman
         run: |
+          mkdir -p newman
           newman run "Inwarranty-flow Collection.postman_collection.json" \
           -e QA.postman_environment.json \
           -d testData.csv \
-          -r cli,htmlextra
+          -r cli,htmlextra \
+          --reporter-htmlextra-export newman/index.html
           
       - name: Newman report    
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: postman-html-report
-          path: newman/*.html # or the specific path where your report is generated
-          
+          path: newman/index.html
 
       - name: creating github page branch   
         if: always()
-        uses: peaceiris/actions-gh-pages@v4.0.0
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir:newman/
-          
+          publish_dir: ./newman  # Fixed syntax with space
