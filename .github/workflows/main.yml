@@ -40,5 +40,12 @@ jobs:
         with:
           name: postman-html-report
           path: newman/*.html # or the specific path where your report is generated
+          
 
+      - name: creating github page branch   
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir:newman/
           
