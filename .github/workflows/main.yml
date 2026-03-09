@@ -3,7 +3,7 @@ name: Postman collection workflow
 on:
   push:
     branches: [main]
-  workflow_dispatch: 
+  workflow_dispatch:
   schedule:
     - cron: '30 02 * * *'
     - cron: '00 14 * * *'
