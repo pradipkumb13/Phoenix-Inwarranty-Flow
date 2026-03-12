@@ -9,7 +9,6 @@ on:
     - cron: '00 14 * * *'
     - cron: '00 06 * * 1-5'
 
-# Added explicit write permissions for the GITHUB_TOKEN
 permissions:
   contents: write
   pages: write
@@ -54,27 +53,20 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./newman  # Fixed syntax with space
-
+          publish_dir: ./newman 
 
       - name: send email notification
-       if: always()
-       uses: dawidd6/action-send-mail@v13
-       with:
-         server_address: smpt. gmail.com
-         server_port: 465
-         username: ${{secrets.EMAIL_USERNAME}}
-         password: ${{secrets.EMAIL_PASSWORD}}
-         subject: Phoenix Inwarranty Flow Test Execution Notification
-         to: pradipkumb13@gmail.com
-         from: ${{secrets.EMAIL_USERNAME}}
-         body: |
-               Hi,
-               Phoenix Inwarranty Flow has been executed. The report has been published and the URL
-               is: https://pradipkumb13.github.io/Phoenix-Inwarranty-Flow/
-         
-         
-         
-         
-       
-     
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{secrets.EMAIL_USERNAME}}
+          password: ${{secrets.EMAIL_PASSWORD}}
+          subject: Phoenix Inwarranty Flow Test Execution Notification
+          to: pradipkumb13@gmail.com
+          from: GitHub Actions
+          body: |
+                Hi,
+                Phoenix Inwarranty Flow has been executed. 
+                The report is available at: https://pradipkumb13.github.io/Phoenix-Inwarranty-Flow/
